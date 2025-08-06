@@ -1,0 +1,51 @@
+services:
+  # Frontend Build Service
+  - type: web
+    name: policy-qa-engine
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VITE_API_BASE_URL
+        value: https://policy-qa-engine.onrender.com/api/v1
+      - key: VITE_API_TOKEN
+        value: 0694fe814b714926217a3ef7bf24ae3247e2e9daff8434cb8084c0d70a942a9b
+    buildFilter:
+      paths:
+        - src/**
+        - public/**
+        - package.json
+        - package-lock.json
+        - vite.config.ts
+        - tailwind.config.ts
+        - tsconfig.json
+        - index.html
+    
+  # API Service
+  - type: web
+    name: policy-qa-api
+    env: node
+    region: oregon
+    plan: free
+    rootDir: ./api
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/v1/hackrx/run
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8000
+      - key: CORS_ORIGIN
+        value: https://policy-qa-engine.onrender.com
+    buildFilter:
+      paths:
+        - api/**
+        - api/package.json
+        - api/package-lock.json
+        - api/tsconfig.json

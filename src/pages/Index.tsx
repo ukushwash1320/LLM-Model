@@ -77,7 +77,7 @@ const Index = () => {
           const webhookPayload = createWebhookPayload('analysis_complete', {
             query,
             documents,
-            result: analysisResult,
+            result: { ...analysisResult },
           });
           await sendWebhook(webhookUrl, webhookPayload);
           
